@@ -1,0 +1,68 @@
+/*2048.scss*/
+* {
+  margin: 0;
+  padding: 0;
+  font-family: Arial;
+  box-sizing: border-box;
+}
+
+header {
+  display: block;
+  width: 500px;
+  margin: 0 auto;
+  text-align: center;
+}
+header h1 {
+  font-weight: bold;
+  font-size: 40px;
+}
+header #newgamebutton {
+  display: block;
+  margin: 0px auto;
+  width: 100px;
+  padding: 10px;
+  background-color: red;
+  border-radius: 10px;
+  color: #fff;
+  text-decoration: none;
+}
+header #newgamebutton:hover {
+  background-color: #9f8b77;
+}
+header p {
+  font-size: 25px;
+  margin: 5px auto;
+}
+
+/**/
+header {
+  width: 100%;
+}
+header h1 {
+  font-size: 40px;
+}
+
+#grid-container {
+  position: relative;
+  width: 500px;
+  height: 500px;
+  padding: 20px;
+  margin: 0px auto;
+  background-color: #bbada0;
+  border-radius: 10px;
+}
+#grid-container .grid-cell {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border-radius: 6px;
+  background-color: #ccc0b3;
+}
+#grid-container .number-cell {
+  position: absolute;
+  font-size: 60px;
+  font-weight: bold;
+  line-height: 100px;
+  text-align: center;
+  border-radius: 6px;
+}
