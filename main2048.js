@@ -213,7 +213,6 @@ document.addEventListener("touchend", function() {
 			// move up
 			if (moveUp()) {
 				setTimeout(generateOneNumber, 110);
-
 				setTimeout(isgameover, 200);
 			}
 		}
@@ -310,3 +309,84 @@ function moveRight() {
 		}
 	}
 	setTimeout(updateBoardView, 80);
+	return true;
+}
+// 向上移动
+function moveUp() {
+	// 判断能否移动
+	if (!canMoveUp(board)) {
+		return false;
+	}
+	// moveUp
+	for (var i = 1; i < 4; i++) {
+		for (var j = 0; j < 4; j++) {
+			if (board[i][j] != 0) {
+				// 判断移动到哪
+				for (var k = 0; k < i; k++) {
+					if (board[k][j] == 0 && noBlockVertical(j, k, i, board)) { // 1 此处无数字 或者 数字相等
+																			   // 2 中间不存在障碍物
+						// move
+						showMoveAnimation(i, j, k, j);
+						board[k][j] = board[i][j];
+						board[i][j] = 0;
+						continue;
+					} else if (board[k][j] == board[i][j] && noBlockVertical(j, k, i, board) && !hasConflicted[k][j]) {
+						// move
+						showMoveAnimation(i, j, k, j);
+
+						// add
+						board[k][j] += board[i][j];
+						board[i][j] = 0;
+						hasConflicted[k][j] = true;
+						// add score
+						score += board[k][i];
+						updateScore(score);
+						continue;
+					}
+				}
+			}
+		}
+	}
+	setTimeout(updateBoardView, 80);
+	return true;
+}
+// 向下移动
+function moveDown() {
+	// 判断能否移动
+	if (!canMoveDown(board)) {
+		return false;
+	}
+	// moveDown
+	for (var i = 2; i >= 0; i--) {
+		for (var j = 0; j < 4; j++) {
+			if (board[i][j] != 0) {
+				// 判断移动到哪
+				for (var k = 3; k > i; k--) {
+					//j 列  i到k 行 
+					if (board[k][j] == 0 && noBlockVertical(j, i, k, board)) { // 1 此处无数字 或者 数字相等
+																				// 2 中间不存在障碍物
+						// move
+						showMoveAnimation(i, j, k, j);
+						board[k][j] = board[i][j];
+						board[i][j] = 0;
+						continue;
+					} else if (board[k][j] == board[i][j] && noBlockVertical(j, i, k, board) && !hasConflicted[k][j]) {
+						// move
+						showMoveAnimation(i, j, k, j);
+
+						// add
+						board[k][j] += board[i][j];
+						board[i][j] = 0;
+						hasConflicted[k][j] = true;
+						// add score
+						score += board[k][j];
+						updateScore(score);
+						continue;
+					}
+				}
+			}
+		}
+	}
+	setTimeout(updateBoardView, 80);
+	return true;
+}
