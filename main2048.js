@@ -213,3 +213,100 @@ document.addEventListener("touchend", function() {
 			// move up
 			if (moveUp()) {
 				setTimeout(generateOneNumber, 110);
+
+				setTimeout(isgameover, 200);
+			}
+		}
+
+	}
+}, false);
+
+// 判断游戏结束
+function isgameover() {
+	if (nospace(board) && noMove(board)) {
+		gameover();
+	}
+}
+
+function gameover() {
+	alert("GAME OVER\n"+"您的得分："+score+"\n"+(score<10000?"小笨蛋":"加油！"));
+}
+
+
+// 向左移动
+function moveLeft() {
+	// 判断能否移动
+	if (!canMoveLeft(board)) {
+		return false;
+	}
+	// moveLeft
+	for (var i = 0; i < 4; i++) {
+		for (var j = 1; j < 4; j++) {
+			if (board[i][j] != 0) {
+				// 判断移动到哪
+				for (var k = 0; k < j; k++) {
+					if (board[i][k] == 0 && noBlockHorizontal(i, k, j, board)) { // 1 此处无数字 或者 数字相等
+						// 2 中间不存在障碍物
+						// move
+						showMoveAnimation(i, j, i, k);
+						board[i][k] = board[i][j];
+						board[i][j] = 0;
+						continue;
+					} else if (board[i][k] == board[i][j] && noBlockHorizontal(i, k, j, board) && !hasConflicted[i][k]) {
+						// move
+						showMoveAnimation(i, j, i, k);
+
+						// add
+						board[i][k] += board[i][j];
+						board[i][j] = 0;
+						hasConflicted[i][k] = true;
+						// add score
+						score += board[i][k];
+						updateScore(score);
+						continue;
+					}
+				}
+			}
+		}
+	}
+	setTimeout(updateBoardView, 80);
+	return true;
+}
+// 向右移动
+function moveRight() {
+	// 判断能否移动
+	if (!canMoveRight(board)) {
+		return false;
+	}
+	// moveRight
+	for (var i = 0; i < 4; i++) {
+		for (var j = 2; j >= 0; j--) {
+			if (board[i][j] != 0) {
+				// 判断移动到哪
+				for (var k = 3; k > j; k--) {
+					// i行 j到k列 	
+					if (board[i][k] == 0 && noBlockHorizontal(i, j, k, board)) { // 1 此处无数字 或者 数字相等
+						// 2 中间不存在障碍物
+						// move
+						showMoveAnimation(i, j, i, k);
+						board[i][k] = board[i][j];
+						board[i][j] = 0;
+						continue;
+					} else if (board[i][k] == board[i][j] && noBlockHorizontal(i, j, k, board) && !hasConflicted[i][k]) {
+						// move
+						showMoveAnimation(i, j, i, k);
+
+						// add
+						board[i][k] += board[i][j];
+						board[i][j] = 0;
+						hasConflicted[i][k] = true;
+						// add score
+						score += board[i][k];
+						updateScore(score);
+						continue;
+					}
+				}
+			}
+		}
+	}
+	setTimeout(updateBoardView, 80);
