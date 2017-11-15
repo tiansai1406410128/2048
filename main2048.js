@@ -117,3 +117,99 @@ function generateOneNumber() {
 			randx = Math.floor(Math.random() * 4);
 			randy = Math.floor(Math.random() * 4);
 		}
+		times++;
+	}
+	if (times == 50) {
+		for (var i = 0; i < 4; i++) {
+			for (var j = 2; j >= 0; j--) {
+				if (board[i][j] == 0) {
+					randx = i;
+					randy = j;
+				}
+			}
+		}
+	}
+	//生成数字 
+	var randNumber = 2;
+	// 数字添加到格子
+	board[randx][randy] = randNumber;
+	showNumberWithAnimation(randx, randy, randNumber);
+
+}
+// 键盘按键事件
+$(document).keydown(function(event) {
+	switch (event.keyCode) {
+		case 37: //left
+			event.preventDefault();
+			if (moveLeft()) {
+				setTimeout(generateOneNumber, 110);
+				setTimeout(isgameover, 200);
+			}
+			break;
+		case 38: //up
+			event.preventDefault();
+			if (moveUp()) {
+				setTimeout(generateOneNumber, 110);
+				setTimeout(isgameover, 200);
+			}
+			break;
+		case 39: //right
+			event.preventDefault();
+			if (moveRight()) {
+				setTimeout(generateOneNumber, 110);
+				setTimeout(isgameover, 200);
+			}
+			break;
+		case 40: //down
+			event.preventDefault();
+			if (moveDown()) {
+				setTimeout(generateOneNumber, 110);
+				setTimeout(isgameover, 200);
+			}
+			break;
+		default:
+			break;
+	}
+});
+// 移动端触控事件
+document.addEventListener("touchstart", function(event) {
+	startX = event.touches[0].pageX;
+	startY = event.touches[0].pageY;
+}, false);
+document.addEventListener("touchend", function() {
+	endX = event.changedTouches[0].pageX;
+	endY = event.changedTouches[0].pageY;
+	// 计算滑动距离
+	// 若滑动距离太小 视为点击 不触发事件
+	var deltaX = endX - startX;
+	var deltaY = endY - startY;
+	if (Math.abs(deltaX) < 0.05 * documentWidth && Math.abs(deltaY) < 0.05 * documentWidth) {
+		return;
+	}
+	if (Math.abs(deltaX) > Math.abs(deltaY)) {
+		// x方向
+		if (deltaX > 0) {
+			// move right
+			if (moveRight()) {
+				setTimeout(generateOneNumber, 110);
+				setTimeout(isgameover, 200);
+			}
+		} else {
+			// move left
+			if (moveLeft()) {
+				setTimeout(generateOneNumber, 110);
+				setTimeout(isgameover, 200);
+			}
+		}
+		// y方向
+	} else {
+		if (deltaY > 0) {
+			// move down
+			if (moveDown()) {
+				setTimeout(generateOneNumber, 110);
+				setTimeout(isgameover, 200);
+			}
+		} else {
+			// move up
+			if (moveUp()) {
+				setTimeout(generateOneNumber, 110);
